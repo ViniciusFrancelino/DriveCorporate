@@ -1,0 +1,8 @@
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import api from '../api'
+export default function RegisterPage() {
+ const [form,setForm]=useState({name:'',email:'',password:''}),[error,setError]=useState(''),[success,setSuccess]=useState(''),[loading,setLoading]=useState(false),navigate=useNavigate()
+ async function submit(e){e.preventDefault();setError('');setSuccess('');setLoading(true);try{await api.post('/auth/register',form);setSuccess('Conta criada. Redirecionando para o login...');setTimeout(()=>navigate('/login'),900)}catch(e){setError(e.response?.data?.message||'Não foi possível criar a conta.')}finally{setLoading(false)}}
+ return <main className="auth-shell"><form className="card shadow-sm p-4 auth-card" onSubmit={submit}><h1 className="h3 mb-3">Criar conta</h1>{error&&<div className="alert alert-danger">{error}</div>}{success&&<div className="alert alert-success">{success}</div>}<label className="form-label">Nome</label><input className="form-control mb-3" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required maxLength="120"/><label className="form-label">E-mail</label><input className="form-control mb-3" type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} required/><label className="form-label">Senha</label><input className="form-control mb-4" type="password" minLength="6" value={form.password} onChange={e=>setForm({...form,password:e.target.value})} required/><button className="btn btn-primary w-100" disabled={loading}>{loading?'Criando...':'Cadastrar'}</button><p className="mt-3 mb-0 text-center"><Link to="/login">Voltar para login</Link></p></form></main>
+}
