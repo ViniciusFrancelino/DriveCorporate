@@ -76,6 +76,20 @@ public class FileService {
         files.save(file);
     }
 
+    @Transactional
+    public FileResponse favorite(Long id) {
+        FileEntity file = ownedActive(id, current.get());
+        file.setFavorite(true);
+        return FileResponse.from(files.save(file));
+    }
+
+    @Transactional
+    public FileResponse unfavorite(Long id) {
+        FileEntity file = ownedActive(id, current.get());
+        file.setFavorite(false);
+        return FileResponse.from(files.save(file));
+    }
+
     private FileEntity ownedActive(Long id, User user) {
         FileEntity file = files.findById(id).orElseThrow(() -> new ResourceNotFoundException("Arquivo não encontrado"));
         if (file.isDeleted()) throw new ResourceNotFoundException("Arquivo não encontrado");

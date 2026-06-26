@@ -17,6 +17,7 @@ public class FileEntity {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "folder_id") private Folder folder;
     @ManyToOne(fetch = FetchType.LAZY, optional = false) @JoinColumn(name = "user_id", nullable = false) private User user;
     @Column(nullable = false) private boolean deleted = false;
+    @Column(nullable = false, columnDefinition = "boolean default false") private boolean favorite = false;
     @Column(nullable = false, updatable = false) private LocalDateTime createdAt;
     @Column(nullable = false) private LocalDateTime updatedAt;
     @PrePersist void beforeCreate() { createdAt = LocalDateTime.now(); updatedAt = createdAt; }

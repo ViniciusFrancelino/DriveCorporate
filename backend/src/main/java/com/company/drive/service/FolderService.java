@@ -86,6 +86,20 @@ public class FolderService {
         }
     }
 
+    @Transactional
+    public FolderResponse favorite(Long id) {
+        Folder folder = getOwned(id, current.get());
+        folder.setFavorite(true);
+        return FolderResponse.from(folders.save(folder));
+    }
+
+    @Transactional
+    public FolderResponse unfavorite(Long id) {
+        Folder folder = getOwned(id, current.get());
+        folder.setFavorite(false);
+        return FolderResponse.from(folders.save(folder));
+    }
+
     private void collectFolders(User user, Folder folder, List<Folder> result) {
         result.add(folder);
         for (Folder child : folders.findByUserAndParentFolderOrderByCreatedAtDesc(user, folder)) {

@@ -12,5 +12,7 @@ public class User {
     @Column(nullable = false, length = 190) private String email;
     @Column(nullable = false) private String password;
     @Column(nullable = false, updatable = false) private LocalDateTime createdAt;
-    @PrePersist void beforeCreate() { createdAt = LocalDateTime.now(); }
+    private LocalDateTime updatedAt;
+    @PrePersist void beforeCreate() { createdAt = LocalDateTime.now(); updatedAt = createdAt; }
+    @PreUpdate void beforeUpdate() { updatedAt = LocalDateTime.now(); }
 }

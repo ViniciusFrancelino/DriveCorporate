@@ -35,4 +35,10 @@ public class FolderController {
         service.delete(id);
         return Map.of("message", "Pasta excluída e arquivos enviados para a lixeira.");
     }
+
+    @PatchMapping("/{id}/favorite")
+    public FolderResponse favorite(@PathVariable Long id) { return service.favorite(id); }
+
+    @PatchMapping("/{id}/unfavorite")
+    public FolderResponse unfavorite(@PathVariable Long id) { return service.unfavorite(id); }
 }

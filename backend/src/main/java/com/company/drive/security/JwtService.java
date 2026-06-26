@@ -1,5 +1,6 @@
 package com.company.drive.security;
 
+import com.company.drive.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -19,7 +20,9 @@ public class JwtService {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)); this.expiration = expiration;
     }
     public String generateToken(UserDetails user) { return Jwts.builder().subject(user.getUsername()).issuedAt(new Date()).expiration(new Date(System.currentTimeMillis()+expiration)).signWith(key).compact(); }
+    public String generateToken(User user) { return Jwts.builder().subject(user.getId().toString()).issuedAt(new Date()).expiration(new Date(System.currentTimeMillis()+expiration)).signWith(key).compact(); }
     public String extractUsername(String token) { return claims(token).getSubject(); }
     public boolean isValid(String token, UserDetails user) { try { return extractUsername(token).equals(user.getUsername()) && claims(token).getExpiration().after(new Date()); } catch (Exception e) { return false; } }
+    public boolean isValidForSubject(String token, String subject) { try { return extractUsername(token).equals(subject) && claims(token).getExpiration().after(new Date()); } catch (Exception e) { return false; } }
     private Claims claims(String token) { return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload(); }
 }

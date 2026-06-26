@@ -48,4 +48,10 @@ public class FileController {
         service.delete(id);
         return Map.of("message", "Arquivo excluído com sucesso.");
     }
+
+    @PatchMapping("/{id}/favorite")
+    public FileResponse favorite(@PathVariable Long id) { return service.favorite(id); }
+
+    @PatchMapping("/{id}/unfavorite")
+    public FileResponse unfavorite(@PathVariable Long id) { return service.unfavorite(id); }
 }

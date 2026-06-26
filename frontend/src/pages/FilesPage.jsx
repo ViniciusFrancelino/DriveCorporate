@@ -3,9 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import {
   FaChevronRight, FaCloudUploadAlt, FaCog, FaDownload, FaEllipsisV, FaFileAlt, FaFolder,
   FaFolderOpen, FaHome, FaInfoCircle, FaPlus, FaRegClock, FaRegStar,
-  FaSearch, FaTrashAlt, FaUserCircle
+  FaSearch, FaStar, FaTrashAlt, FaUserCircle
 } from 'react-icons/fa'
 import api from '../api'
+import { favoriteFile, unfavoriteFile } from '../services/fileService'
+import { favoriteFolder, unfavoriteFolder } from '../services/folderService'
 
 const MAX_UPLOAD_SIZE = 50 * 1024 * 1024
 const formatSize = (size = 0) => size < 1024 ? `${size} B` : size < 1024 ** 2 ? `${(size / 1024).toFixed(1)} KB` : `${(size / 1024 ** 2).toFixed(1)} MB`
@@ -32,6 +34,7 @@ export default function FilesPage() {
   const [panel, setPanel] = useState(null)
   const [folderName, setFolderName] = useState('')
   const [folderMenu, setFolderMenu] = useState(null)
+  const [fileMenu, setFileMenu] = useState(null)
   const [folderToDelete, setFolderToDelete] = useState(null)
   const [details, setDetails] = useState(null)
   const [toast, setToast] = useState(null)
@@ -183,6 +186,38 @@ export default function FilesPage() {
     } catch (requestError) { setError(errorMessage(requestError, 'Não foi possível excluir o arquivo.')) }
   }
 
+  async function toggleFileFavorite(file) {
+    try {
+      if (file.favorite) {
+        await unfavoriteFile(file.id)
+        notify('Arquivo removido dos favoritos.')
+      } else {
+        await favoriteFile(file.id)
+        notify('Arquivo adicionado aos favoritos.')
+      }
+      setFileMenu(null)
+      await load()
+    } catch (requestError) {
+      setError(errorMessage(requestError, file.favorite ? 'Não foi possível remover dos favoritos.' : 'Não foi possível favoritar o item.'))
+    }
+  }
+
+  async function toggleFolderFavorite(folder) {
+    try {
+      if (folder.favorite) {
+        await unfavoriteFolder(folder.id)
+        notify('Pasta removida dos favoritos.')
+      } else {
+        await favoriteFolder(folder.id)
+        notify('Pasta adicionada aos favoritos.')
+      }
+      setFolderMenu(null)
+      await load()
+    } catch (requestError) {
+      setError(errorMessage(requestError, folder.favorite ? 'Não foi possível remover dos favoritos.' : 'Não foi possível favoritar o item.'))
+    }
+  }
+
   async function deleteFolder() {
     if (!folderToDelete) return
     setBusy(true)
@@ -232,9 +267,9 @@ export default function FilesPage() {
       <nav className="drive-nav" aria-label="Navegação principal">
         <button className={view === 'drive' ? 'active' : ''} onClick={openDrive}><FaFolder /> Arquivos</button>
         <button className={view === 'recent' ? 'active' : ''} onClick={() => { setView('recent'); setSearch(''); navigate('/drive') }}><FaRegClock /> Recentes</button>
-        <button disabled title="Em breve"><FaRegStar /> Favoritos</button>
+        <button onClick={() => navigate('/favorites')}><FaRegStar /> Favoritos</button>
         <button className={view === 'trash' ? 'active' : ''} onClick={() => { setView('trash'); setSearch(''); navigate('/drive') }}><FaTrashAlt /> Lixeira</button>
-        <button disabled title="Em breve"><FaCog /> Configurações</button>
+        <button onClick={() => navigate('/settings')}><FaCog /> Configurações</button>
       </nav>
       <div className="storage-card"><div className="small text-muted mb-2">Armazenamento</div><div className="storage-track"><span style={{ width: `${usagePercent}%` }} /></div><div className="storage-label">{formatSize(usedSpace)} de 5 GB usados</div></div>
     </aside>
@@ -247,7 +282,7 @@ export default function FilesPage() {
         <div className="user-area"><FaUserCircle /><span>{user.name || user.email || 'Usuário'}</span><button onClick={logout}>Sair</button></div>
       </header>
 
-      <main className="drive-content" onClick={() => setFolderMenu(null)}>
+      <main className="drive-content" onClick={() => { setFolderMenu(null); setFileMenu(null) }}>
         {toast && <div className="drive-toast success">{toast}</div>}
         {error && <div className="drive-toast error">{error}<button onClick={() => setError('')} aria-label="Fechar">×</button></div>}
         <div className="content-heading">
@@ -260,13 +295,13 @@ export default function FilesPage() {
         {!loading && folders.length > 0 && <section className="folder-section"><h2>Pastas</h2><div className="folder-grid">{folders.map(folder => {
           const count = allFiles.filter(file => file.folderId === folder.id).length
           return <article className="folder-card" key={folder.id}>
-            <button className="folder-open" onClick={() => openFolder(folder)}><FaFolder /><span>{folder.name}</span><small>{count} {count === 1 ? 'arquivo' : 'arquivos'}</small></button>
-            <div className="folder-actions" onClick={event => event.stopPropagation()}><button className="icon-button" aria-label={`Ações da pasta ${folder.name}`} onClick={() => setFolderMenu(folderMenu === folder.id ? null : folder.id)}><FaEllipsisV /></button>{folderMenu === folder.id && <div className="action-menu"><button onClick={() => setFolderToDelete(folder)}><FaTrashAlt /> Excluir</button></div>}</div>
+            <button className="folder-open" onClick={() => openFolder(folder)}><FaFolder /><span>{folder.name}</span><small>{count} {count === 1 ? 'arquivo' : 'arquivos'}{folder.favorite ? ' • favorito' : ''}</small></button>
+            <div className="folder-actions" onClick={event => event.stopPropagation()}><button className="icon-button" aria-label={`Ações da pasta ${folder.name}`} onClick={() => setFolderMenu(folderMenu === folder.id ? null : folder.id)}><FaEllipsisV /></button>{folderMenu === folder.id && <div className="action-menu"><button onClick={() => openFolder(folder)}><FaFolderOpen /> Abrir</button><button onClick={() => toggleFolderFavorite(folder)}>{folder.favorite ? <FaRegStar /> : <FaStar />} {folder.favorite ? 'Desfavoritar' : 'Favoritar'}</button><button className="danger" onClick={() => setFolderToDelete(folder)}><FaTrashAlt /> Excluir</button></div>}</div>
           </article>
         })}</div></section>}
 
         <section className="files-section"><div className="files-heading"><h2>{view === 'trash' ? 'Arquivos excluídos' : 'Arquivos'}</h2><span>{files.length} item(ns)</span></div>
-          {loading ? <div className="empty-state"><span className="spinner-border spinner-border-sm" /> Carregando arquivos…</div> : files.length === 0 ? <div className="empty-state"><FaFileAlt /><p>{view === 'trash' ? 'A lixeira está vazia.' : 'Nenhum arquivo neste local.'}</p>{view === 'drive' && <button className="btn btn-primary" onClick={() => setPanel('upload')}>Enviar arquivo</button>}</div> : <div className="table-responsive"><table className="files-table"><thead><tr><th>Nome</th><th>Tipo</th><th>Tamanho</th><th>Pasta</th><th>Data de upload</th><th aria-label="Ações" /></tr></thead><tbody>{files.map(file => <tr key={file.id}><td><span className="file-name"><FaFileAlt />{file.originalName}</span></td><td>{file.extension?.toUpperCase() || 'Arquivo'}</td><td>{formatSize(file.size)}</td><td>{file.folderName || 'Sem pasta'}</td><td>{formatDate(file.createdAt)}</td><td><div className="file-actions">{view !== 'trash' && <button title="Baixar" onClick={() => download(file)}><FaDownload /></button>}<button title="Detalhes" onClick={() => setDetails(file)}><FaInfoCircle /></button>{view !== 'trash' && <button title="Excluir" className="danger" onClick={() => removeFile(file)}><FaTrashAlt /></button>}</div></td></tr>)}</tbody></table></div>}
+          {loading ? <div className="empty-state"><span className="spinner-border spinner-border-sm" /> Carregando arquivos…</div> : files.length === 0 ? <div className="empty-state"><FaFileAlt /><p>{view === 'trash' ? 'A lixeira está vazia.' : 'Nenhum arquivo neste local.'}</p>{view === 'drive' && <button className="btn btn-primary" onClick={() => setPanel('upload')}>Enviar arquivo</button>}</div> : <div className="table-responsive"><table className="files-table"><thead><tr><th>Nome</th><th>Tipo</th><th>Tamanho</th><th>Pasta</th><th>Data de upload</th><th aria-label="Ações" /></tr></thead><tbody>{files.map(file => <tr key={file.id}><td><span className="file-name"><FaFileAlt />{file.originalName}{file.favorite && <FaStar className="favorite-marker" title="Favorito" />}</span></td><td>{file.extension?.toUpperCase() || 'Arquivo'}</td><td>{formatSize(file.size)}</td><td>{file.folderName || 'Sem pasta'}</td><td>{formatDate(file.createdAt)}</td><td><div className="file-actions menu-actions" onClick={event => event.stopPropagation()}><button title="Ações" aria-label={`Ações do arquivo ${file.originalName}`} onClick={() => setFileMenu(fileMenu === file.id ? null : file.id)}><FaEllipsisV /></button>{fileMenu === file.id && <div className="action-menu file-menu">{view !== 'trash' && <button onClick={() => download(file)}><FaDownload /> Baixar</button>}<button onClick={() => setDetails(file)}><FaInfoCircle /> Detalhes</button>{view !== 'trash' && <button onClick={() => toggleFileFavorite(file)}>{file.favorite ? <FaRegStar /> : <FaStar />} {file.favorite ? 'Desfavoritar' : 'Favoritar'}</button>}{view !== 'trash' && <button className="danger" onClick={() => removeFile(file)}><FaTrashAlt /> Excluir</button>}</div>}</div></td></tr>)}</tbody></table></div>}
         </section>
       </main>
     </div>
