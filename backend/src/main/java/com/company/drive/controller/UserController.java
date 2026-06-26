@@ -35,6 +35,11 @@ public class UserController {
         return service.changePassword(request);
     }
 
+    @DeleteMapping
+    public MessageResponse deleteCurrentAccount(@Valid @RequestBody DeleteAccountRequest request) {
+        return service.deleteCurrentAccount(request);
+    }
+
     @GetMapping("/kpis")
     public UserKpiResponse kpis() {
         return service.kpis();

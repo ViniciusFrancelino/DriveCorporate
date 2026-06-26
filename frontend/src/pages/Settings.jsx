@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { FaArrowLeft, FaEnvelope, FaFileAlt, FaFolder, FaKey, FaSignOutAlt, FaUserCircle, FaUserEdit } from 'react-icons/fa'
-import { changePassword, getCurrentUser, getUserKpis, updateEmail, updateProfile } from '../services/userService'
+import { FaArrowLeft, FaEnvelope, FaExclamationTriangle, FaFileAlt, FaFolder, FaKey, FaSignOutAlt, FaTrashAlt, FaUserCircle, FaUserEdit } from 'react-icons/fa'
+import { changePassword, deleteAccount, getCurrentUser, getUserKpis, updateEmail, updateProfile } from '../services/userService'
 
 const errorMessage = (error, fallback) => error.response?.data?.message || fallback
 
@@ -12,6 +12,8 @@ export default function Settings() {
   const [name, setName] = useState('')
   const [emailForm, setEmailForm] = useState({ email: '', currentPassword: '' })
   const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
+  const [deleteForm, setDeleteForm] = useState({ confirmation: '', currentPassword: '' })
+  const [deleteOpen, setDeleteOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState('')
   const [loadError, setLoadError] = useState('')
@@ -111,6 +113,36 @@ export default function Settings() {
     }
   }
 
+  async function confirmDeleteAccount(event) {
+    event.preventDefault()
+    resetMessages()
+    if (!deleteForm.currentPassword.trim()) {
+      setFormError('Informe sua senha atual.')
+      return
+    }
+    if (deleteForm.confirmation !== 'EXCLUIR') {
+      setFormError('Digite EXCLUIR para confirmar.')
+      return
+    }
+    setSaving('delete')
+    try {
+      await deleteAccount({ currentPassword: deleteForm.currentPassword })
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      navigate('/login', { replace: true })
+    } catch (error) {
+      if (error.response?.status === 401) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        navigate('/login', { replace: true })
+        return
+      }
+      setFormError(errorMessage(error, 'Não foi possível deletar a conta.'))
+    } finally {
+      setSaving('')
+    }
+  }
+
   return <div className="settings-shell">
     <header className="settings-topbar">
       <Link className="settings-back" to="/drive"><FaArrowLeft /> Voltar aos arquivos</Link>
@@ -174,6 +206,24 @@ export default function Settings() {
           <button className="btn btn-primary" disabled={saving === 'password'}>{saving === 'password' ? 'Alterando...' : 'Alterar senha'}</button>
         </form>
       </div>
+
+      <section className="settings-section danger-zone">
+        <div className="alert alert-danger border border-danger">
+          <h2><FaExclamationTriangle /> Zona de perigo</h2>
+          <p>Ao deletar sua conta, seu acesso será desativado e você será desconectado.</p>
+          <p>Esta ação não pode ser desfeita pela interface.</p>
+          {!deleteOpen ? <button className="btn btn-danger" onClick={() => { resetMessages(); setDeleteOpen(true) }}><FaTrashAlt /> Deletar conta</button> : <form className="delete-account-form" onSubmit={confirmDeleteAccount}>
+            <label className="form-label" htmlFor="deleteConfirmation">Digite EXCLUIR para confirmar</label>
+            <input id="deleteConfirmation" className="form-control" value={deleteForm.confirmation} onChange={event => setDeleteForm({ ...deleteForm, confirmation: event.target.value })} autoComplete="off" />
+            <label className="form-label" htmlFor="deletePassword">Senha atual</label>
+            <input id="deletePassword" className="form-control" type="password" value={deleteForm.currentPassword} onChange={event => setDeleteForm({ ...deleteForm, currentPassword: event.target.value })} required />
+            <div className="delete-actions">
+              <button type="button" className="btn btn-light" onClick={() => { setDeleteOpen(false); setDeleteForm({ confirmation: '', currentPassword: '' }) }} disabled={saving === 'delete'}>Cancelar</button>
+              <button className="btn btn-danger" disabled={saving === 'delete' || deleteForm.confirmation !== 'EXCLUIR' || !deleteForm.currentPassword.trim()}>{saving === 'delete' ? 'Deletando...' : 'Confirmar exclusão da conta'}</button>
+            </div>
+          </form>}
+        </div>
+      </section>
     </main>
   </div>
 }

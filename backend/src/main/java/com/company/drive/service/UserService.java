@@ -66,6 +66,17 @@ public class UserService {
         return new MessageResponse("Senha alterada com sucesso.");
     }
 
+    @Transactional
+    public MessageResponse deleteCurrentAccount(DeleteAccountRequest request) {
+        User user = currentUser.get();
+        if (!encoder.matches(request.currentPassword(), user.getPassword())) {
+            throw new BadRequestException("Senha atual incorreta.");
+        }
+        user.setActive(false);
+        users.save(user);
+        return new MessageResponse("Conta deletada com sucesso.");
+    }
+
     public UserKpiResponse kpis() {
         User user = currentUser.get();
         long totalFiles = files.countByUserAndDeletedFalse(user);
