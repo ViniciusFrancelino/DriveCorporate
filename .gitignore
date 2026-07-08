@@ -1,5 +1,60 @@
-backend/target/
-frontend/node_modules/
-frontend/dist/
-frontend/.env
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors and IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Logs
 *.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Node / Vite frontend
+**/node_modules/
+**/dist/
+**/.vite/
+**/.cache/
+
+# Java / Maven backend
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# Runtime uploads and local storage
+/a_code/a_backend/storage/**
+!/a_code/a_backend/storage/
+!/a_code/a_backend/storage/.gitkeep
+/c_storage/storage/**
+!/c_storage/storage/
+!/c_storage/storage/drive-corporativo/
+!/c_storage/storage/drive-corporativo/.gitkeep
+
+# Databases and local dumps
+*.db
+*.sqlite
+*.sqlite3
+*.sql.gz
+*.dump
+
+# Docker local overrides
+docker-compose.override.yml
