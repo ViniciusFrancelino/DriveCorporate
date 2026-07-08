@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/drive_corporativo}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+app:
+  storage:
+    path: ${STORAGE_PATH:./storage/drive-corporativo}
+jwt:
+  secret: ${JWT_SECRET:troque-esta-chave-local-por-um-segredo-com-pelo-menos-32-caracteres}
+  expiration: ${JWT_EXPIRATION:86400000}
