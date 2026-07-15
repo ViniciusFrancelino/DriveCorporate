@@ -5,15 +5,15 @@
 Para entender o projeto no estado atual, a leitura recomendada é:
 
 1. `README.md` da raiz.
-2. `docker-compose.yml`.
-3. `backend/src/main/resources/application.yml`.
-4. `backend/src/main/java/com/company/drive/DriveApplication.java`.
-5. Controllers em `backend/src/main/java/com/company/drive/controller/`.
-6. Services em `backend/src/main/java/com/company/drive/service/`.
-7. Entidades em `backend/src/main/java/com/company/drive/entity/`.
-8. `frontend/src/App.jsx`.
-9. `frontend/src/api.js`.
-10. Páginas em `frontend/src/pages/`.
+2. `a_code/docker-compose.yml`.
+3. `a_code/a_backend/src/main/resources/application.yml`.
+4. `a_code/a_backend/src/main/java/com/company/drive/DriveApplication.java`.
+5. Controllers em `a_code/a_backend/src/main/java/com/company/drive/controller/`.
+6. Services em `a_code/a_backend/src/main/java/com/company/drive/service/`.
+7. Entidades em `a_code/a_backend/src/main/java/com/company/drive/entity/`.
+8. `a_code/b_frontend/src/App.jsx`.
+9. `a_code/b_frontend/src/api.js`.
+10. Páginas em `a_code/b_frontend/src/pages/`.
 
 ## Backend
 

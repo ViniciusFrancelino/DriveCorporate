@@ -19,6 +19,7 @@ desktop.ini
 # Logs
 *.log
 logs/
+.logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -41,9 +42,14 @@ hs_err_pid*
 replay_pid*
 
 # Runtime uploads and local storage
+/storage/drive-corporativo/
+.pids/
 /a_code/a_backend/storage/**
 !/a_code/a_backend/storage/
 !/a_code/a_backend/storage/.gitkeep
+/c_storage/DriveCorporate/**
+!/c_storage/DriveCorporate/
+!/c_storage/DriveCorporate/.gitkeep
 /c_storage/storage/**
 !/c_storage/storage/
 !/c_storage/storage/drive-corporativo/

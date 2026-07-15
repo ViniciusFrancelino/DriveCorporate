@@ -16,7 +16,7 @@ Identificados no repositório:
 Na raiz do projeto:
 
 ```bash
-docker compose up -d mysql
+docker compose -f a_code/docker-compose.yml up -d mysql
 ```
 
 O serviço usa MySQL 8.4, cria o banco `drive_corporativo` e expõe a porta `3306`.
@@ -30,13 +30,13 @@ docker ps
 Parar o banco:
 
 ```bash
-docker compose down
+docker compose -f a_code/docker-compose.yml down
 ```
 
 Remover também o volume de dados local:
 
 ```bash
-docker compose down -v
+docker compose -f a_code/docker-compose.yml down -v
 ```
 
 Use `down -v` apenas quando quiser apagar os dados persistidos no volume `mysql_data`.
@@ -51,7 +51,7 @@ CREATE DATABASE IF NOT EXISTS drive_corporativo
   COLLATE utf8mb4_unicode_ci;
 ```
 
-O mesmo comando está no arquivo `mysql/init.sql`.
+O mesmo comando está no arquivo `a_code/c_mysql/init.sql`.
 
 ## 2. Configurar variáveis do backend
 
@@ -63,15 +63,17 @@ export DB_USERNAME='root'
 export DB_PASSWORD='root'
 export JWT_SECRET='altere-este-segredo-local-com-mais-de-32-caracteres'
 export JWT_EXPIRATION='86400000'
-export STORAGE_PATH='./storage/drive-corporativo'
+export STORAGE_PATH='../../c_storage/DriveCorporate'
 ```
 
 Ajuste `DB_USERNAME` e `DB_PASSWORD` conforme seu MySQL local.
+Quando o backend for iniciado a partir de `a_code/a_backend`, `../../c_storage/DriveCorporate` aponta para o diretório de storage na raiz do projeto. Use um caminho absoluto em `STORAGE_PATH` se executar o backend a partir de outro diretório.
 
 ## 3. Executar backend
 
 ```bash
-cd backend
+mkdir -p c_storage/DriveCorporate
+cd a_code/a_backend
 mvn spring-boot:run
 ```
 
@@ -92,18 +94,18 @@ http://localhost:8080/api
 Criar arquivo opcional:
 
 ```bash
-cd frontend
+cd a_code/b_frontend
 cat > .env <<'EOF'
 VITE_API_URL=http://localhost:8080/api
 EOF
 ```
 
-Se `.env` não existir, `frontend/src/api.js` usa `http://localhost:8080/api` como default.
+Se `.env` não existir, `a_code/b_frontend/src/api.js` usa `http://localhost:8080/api` como default.
 
 ## 5. Instalar dependências e executar frontend
 
 ```bash
-cd frontend
+cd a_code/b_frontend
 npm install
 npm run dev
 ```
@@ -117,7 +119,7 @@ http://localhost:5173
 ## 6. Build do frontend
 
 ```bash
-cd frontend
+cd a_code/b_frontend
 npm run build
 ```
 
@@ -165,9 +167,15 @@ Confirme se o backend está em `http://localhost:8080/api` ou ajuste `VITE_API_U
 
 Os controllers estão configurados para `http://localhost:5173`. Para outro host/porta, será necessário ajustar a configuração de CORS no backend.
 
+## Automação local identificada
+
+- `d_scripts/dev-start.sh`: inicia MySQL, backend e frontend localmente.
+- `d_scripts/dev-stop.sh`: para backend e frontend; opcionalmente para o MySQL.
+- `d_scripts/dev-status.sh`: mostra status dos serviços, portas e logs.
+- `d_scripts/migrate-storage.sh`: copia arquivos de storages antigos para o storage local atual.
+
 ## Itens não identificados no repositório
 
-- Script único para subir frontend, backend e banco simultaneamente.
 - Dockerfile para backend.
 - Dockerfile para frontend.
 - Docker Compose com backend e frontend.

@@ -4,51 +4,51 @@
 
 | Necessidade | Onde começar |
 |---|---|
-| Alterar autenticação | `backend/security`, `AuthService`, `AuthController`, `frontend/src/api.js`, `LoginPage.jsx`. |
+| Alterar autenticação | `a_code/a_backend/src/main/java/com/company/drive/security`, `AuthService`, `AuthController`, `a_code/b_frontend/src/api.js`, `LoginPage.jsx`. |
 | Alterar upload/download | `FileController`, `FileService`, `StorageService`, `FilesPage.jsx`. |
 | Alterar pastas | `FolderController`, `FolderService`, `FolderRepository`, `FilesPage.jsx`. |
 | Alterar favoritos | `FavoriteController`, `FavoriteService`, endpoints de favorite/unfavorite, `Favorites.jsx`. |
 | Alterar configurações da conta | `UserController`, `UserService`, `Settings.jsx`, `userService.js`. |
-| Alterar banco | Entidades em `backend/entity`, repositories e `application.yml`. |
-| Alterar base URL da API no frontend | `frontend/src/api.js` ou variável `VITE_API_URL`. |
+| Alterar banco | Entidades em `a_code/a_backend/src/main/java/com/company/drive/entity`, repositories e `application.yml`. |
+| Alterar base URL da API no frontend | `a_code/b_frontend/src/api.js` ou variável `VITE_API_URL`. |
 | Alterar storage local | `StorageProperties`, `StorageService`, variável `STORAGE_PATH`. |
 
 ## Como adicionar novos endpoints
 
 Fluxo recomendado:
 
-1. Criar ou ajustar DTOs em `backend/src/main/java/com/company/drive/dto/`.
+1. Criar ou ajustar DTOs em `a_code/a_backend/src/main/java/com/company/drive/dto/`.
 2. Adicionar método no service responsável pela regra de negócio.
 3. Usar repositories para persistência, mantendo validação de usuário proprietário quando aplicável.
 4. Criar endpoint no controller correspondente.
 5. Garantir validação com `@Valid` quando houver corpo de entrada.
 6. Atualizar o frontend em `src/services` ou na página que consome o endpoint.
-7. Atualizar `docs/api.md`.
+7. Atualizar `b_docs/g_api.md`.
 
 ## Como adicionar uma nova tela no frontend
 
-1. Criar componente em `frontend/src/pages/`.
-2. Criar services em `frontend/src/services/` se a tela consumir endpoints novos.
-3. Adicionar rota em `frontend/src/App.jsx`.
+1. Criar componente em `a_code/b_frontend/src/pages/`.
+2. Criar services em `a_code/b_frontend/src/services/` se a tela consumir endpoints novos.
+3. Adicionar rota em `a_code/b_frontend/src/App.jsx`.
 4. Se a tela exigir login, envolver com `PrivateRoute`.
 5. Adicionar navegação nos menus das telas relevantes.
-6. Atualizar `docs/frontend.md`.
+6. Atualizar `b_docs/i_frontend.md`.
 
 ## Como adicionar nova entidade
 
-1. Criar entidade em `backend/src/main/java/com/company/drive/entity/`.
-2. Criar repository em `backend/src/main/java/com/company/drive/repository/`.
+1. Criar entidade em `a_code/a_backend/src/main/java/com/company/drive/entity/`.
+2. Criar repository em `a_code/a_backend/src/main/java/com/company/drive/repository/`.
 3. Criar DTOs de entrada/saída.
 4. Criar service com regras de negócio.
 5. Criar controller se a entidade tiver API pública.
 6. Avaliar impacto em banco. No estado atual, o Hibernate usa `ddl-auto: update`; para evolução segura, é recomendável adicionar migrations versionadas.
-7. Atualizar `docs/database.md`, `docs/backend.md` e `docs/api.md`.
+7. Atualizar `b_docs/f_database.md`, `b_docs/h_backend.md` e `b_docs/g_api.md`.
 
 ## Como alterar configurações
 
 ### Backend
 
-Alterar `backend/src/main/resources/application.yml` apenas para defaults locais. Para ambientes externos, preferir variáveis de ambiente:
+Alterar `a_code/a_backend/src/main/resources/application.yml` apenas para defaults locais. Para ambientes externos, preferir variáveis de ambiente:
 
 - `DB_URL`
 - `DB_USERNAME`
@@ -59,7 +59,7 @@ Alterar `backend/src/main/resources/application.yml` apenas para defaults locais
 
 ### Frontend
 
-Alterar a variável `VITE_API_URL` no arquivo `frontend/.env` local ou no ambiente de build.
+Alterar a variável `VITE_API_URL` no arquivo `a_code/b_frontend/.env` local ou no ambiente de build.
 
 ## Boas práticas já utilizadas
 
@@ -88,7 +88,7 @@ Alterar a variável `VITE_API_URL` no arquivo `frontend/.env` local ou no ambien
 | `FilesPage.jsx` muito concentrado | Aumenta custo de manutenção e risco de regressão em mudanças de UI. |
 | Ausência de migrations | Dificulta evolução controlada do banco. |
 | Ausência de testes identificados | Mudanças em regras críticas dependem de validação manual. |
-| Diretório `storage/` presente no repositório | Risco de versionar arquivos enviados ou dados locais. |
+| Diretório `c_storage/DriveCorporate` presente no repositório | Risco de versionar arquivos enviados ou dados locais. |
 
 ## Débitos técnicos visíveis
 
@@ -101,7 +101,7 @@ Alterar a variável `VITE_API_URL` no arquivo `frontend/.env` local ou no ambien
 - Adicionar validação de upload por assinatura de arquivo, se segurança for requisito.
 - Adicionar política de limpeza física para arquivos excluídos, se aplicável.
 - Adicionar fluxo de restauração de lixeira, se a lixeira for parte funcional do produto.
-- Ignorar `storage/` no `.gitignore`, caso o diretório seja apenas runtime/local.
+- Ignorar `c_storage/DriveCorporate/` no `.gitignore`, caso o diretório seja apenas runtime/local.
 
 ## Sugestões objetivas de melhoria
 
@@ -126,6 +126,6 @@ Estas sugestões são separadas da documentação factual e representam melhoria
 - A mudança afeta banco e filesystem ao mesmo tempo?
 - Existe rollback ou compensação caso a gravação física falhe?
 - O frontend usa o mesmo contrato que o backend retorna?
-- A documentação em `docs/` foi atualizada?
+- A documentação em `b_docs/` foi atualizada?
 - A configuração funciona sem expor segredo real?
 - A alteração exige migração de dados existentes?

@@ -146,7 +146,7 @@ A sessão do usuário é persistida em `localStorage` por meio das chaves:
 ## Como executar o frontend
 
 ```bash
-cd frontend
+cd a_code/b_frontend
 npm install
 npm run dev
 ```

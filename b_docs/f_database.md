@@ -24,7 +24,7 @@ O banco padrão é `drive_corporativo`.
 
 ## Script SQL identificado
 
-Arquivo: `mysql/init.sql`.
+Arquivo: `a_code/c_mysql/init.sql`.
 
 Função: criar o banco caso ele não exista.
 
@@ -151,7 +151,7 @@ Fluxo identificado:
 
 - Migrations versionadas: não identificado no repositório.
 - Seeds de dados da aplicação: não identificado no repositório.
-- Script de criação do banco: identificado em `mysql/init.sql`.
+- Script de criação do banco: identificado em `a_code/c_mysql/init.sql`.
 
 ## Pontos de atenção
 
@@ -159,5 +159,5 @@ Fluxo identificado:
 - A consistência entre banco e filesystem depende de ambos serem preservados. Backup apenas do MySQL não recupera arquivos físicos.
 - A exclusão de arquivo é lógica no banco; o arquivo físico permanece no filesystem pelo fluxo identificado.
 - A exclusão de pasta remove registros de pasta, move arquivos para lixeira lógica e zera o vínculo com pasta.
-- O diretório `storage/` aparece no repositório; é recomendável evitar versionar uploads reais.
+- O diretório `c_storage/DriveCorporate/` é o storage local esperado; é recomendável evitar versionar uploads reais.
 - Não foi identificado controle transacional envolvendo rollback de arquivo físico caso a persistência no banco falhe após gravação do arquivo.

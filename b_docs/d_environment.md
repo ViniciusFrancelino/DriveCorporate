@@ -2,14 +2,14 @@
 
 ## Backend
 
-As configurações do backend estão em `backend/src/main/resources/application.yml` e usam variáveis de ambiente com valores default para desenvolvimento local.
+As configurações do backend estão em `a_code/a_backend/src/main/resources/application.yml` e usam variáveis de ambiente com valores default para desenvolvimento local.
 
 | Variável | Obrigatória | Default identificado | Onde é usada | Descrição | Impacto se ausente |
 |---|---:|---|---|---|---|
 | `DB_URL` | Não para dev; sim para ambiente configurado fora do default | `jdbc:mysql://localhost:3306/drive_corporativo` | `spring.datasource.url` | URL JDBC do MySQL. | Usa o banco local default. Se o banco local não existir, o backend falha ao conectar. |
 | `DB_USERNAME` | Não para dev; sim para ambiente seguro | `root` | `spring.datasource.username` | Usuário do banco. | Usa `root`. Pode falhar se o usuário/senha não existirem. |
 | `DB_PASSWORD` | Não para dev; sim para ambiente seguro | `root` | `spring.datasource.password` | Senha do banco. | Usa `root`. Pode falhar se a senha do banco for diferente. |
-| `STORAGE_PATH` | Não | `./storage/drive-corporativo` | `app.storage.path` | Diretório raiz para armazenamento físico dos arquivos. | Usa o diretório local default relativo ao processo do backend. |
+| `STORAGE_PATH` | Não | `../../c_storage/DriveCorporate` | `app.storage.path` | Diretório raiz para armazenamento físico dos arquivos. | Usa `c_storage/DriveCorporate` na raiz do projeto quando o backend é iniciado a partir de `a_code/a_backend`. |
 | `JWT_SECRET` | Não para dev; sim para ambiente seguro | Valor local definido em `application.yml` | `jwt.secret` | Segredo usado para assinar tokens JWT. Deve ter pelo menos 32 caracteres. | Usa segredo default local. Não recomendado para produção. |
 | `JWT_EXPIRATION` | Não | `86400000` | `jwt.expiration` | Tempo de expiração do token em milissegundos. | Usa 24 horas. |
 
@@ -26,12 +26,12 @@ As configurações do backend estão em `backend/src/main/resources/application.
 
 | Variável | Obrigatória | Default identificado | Onde é usada | Descrição | Impacto se ausente |
 |---|---:|---|---|---|---|
-| `VITE_API_URL` | Não | `http://localhost:8080/api` | `frontend/src/api.js` | Base URL da API consumida pelo Axios. | Usa backend local na porta 8080 com prefixo `/api`. |
+| `VITE_API_URL` | Não | `http://localhost:8080/api` | `a_code/b_frontend/src/api.js` | Base URL da API consumida pelo Axios. | Usa backend local na porta 8080 com prefixo `/api`. |
 
 Exemplo local:
 
 ```bash
-# frontend/.env
+# a_code/b_frontend/.env
 VITE_API_URL=http://localhost:8080/api
 ```
 
@@ -47,15 +47,15 @@ O arquivo `docker-compose.yml` define um serviço `mysql`.
 | `MYSQL_ROOT_PASSWORD` | `root` | Valor local. Deve ser tratado como segredo em ambientes reais. |
 | `MYSQL_DATABASE` | `drive_corporativo` | Banco criado pelo container. |
 | Volume | `mysql_data:/var/lib/mysql` | Persistência dos dados do MySQL. |
-| Script inicial | `./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql` | Cria o banco se não existir. |
+| Script inicial | `./c_mysql/init.sql:/docker-entrypoint-initdb.d/init.sql` | Cria o banco se não existir. |
 
 ## Arquivos de ambiente identificados
 
-- `backend/src/main/resources/application.yml`.
-- `docker-compose.yml`.
-- `frontend/vite.config.js`.
-- `frontend/package.json`.
-- `backend/pom.xml`.
+- `a_code/a_backend/src/main/resources/application.yml`.
+- `a_code/docker-compose.yml`.
+- `a_code/b_frontend/vite.config.js`.
+- `a_code/b_frontend/package.json`.
+- `a_code/a_backend/pom.xml`.
 
 ## Arquivos não identificados
 

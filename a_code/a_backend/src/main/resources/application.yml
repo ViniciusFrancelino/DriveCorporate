@@ -13,7 +13,7 @@ spring:
       max-request-size: 50MB
 app:
   storage:
-    path: ${STORAGE_PATH:./storage/drive-corporativo}
+    path: ${STORAGE_PATH:../../c_storage/DriveCorporate}
 jwt:
   secret: ${JWT_SECRET:troque-esta-chave-local-por-um-segredo-com-pelo-menos-32-caracteres}
   expiration: ${JWT_EXPIRATION:86400000}

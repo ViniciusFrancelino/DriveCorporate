@@ -22,7 +22,7 @@ O backend existe no diretório `backend/` e foi implementado em Java 17 com Spri
 ## Estrutura de pacotes
 
 ```text
-backend/src/main/java/com/company/drive/
+a_code/a_backend/src/main/java/com/company/drive/
 ├── DriveApplication.java
 ├── config/
 │   ├── AuthenticationConfig.java
@@ -105,7 +105,7 @@ O `JwtService` exige segredo com pelo menos 32 caracteres. O token usa o identif
 
 ## Configurações relevantes
 
-Arquivo principal: `backend/src/main/resources/application.yml`.
+Arquivo principal: `a_code/a_backend/src/main/resources/application.yml`.
 
 Configurações identificadas:
 
@@ -116,7 +116,7 @@ Configurações identificadas:
 - `spring.jpa.show-sql`: `true`.
 - `spring.servlet.multipart.max-file-size`: `50MB`.
 - `spring.servlet.multipart.max-request-size`: `50MB`.
-- `app.storage.path`: usa `STORAGE_PATH` com default `./storage/drive-corporativo`.
+- `app.storage.path`: usa `STORAGE_PATH` com default `../../c_storage/DriveCorporate`, que aponta para `c_storage/DriveCorporate` na raiz quando o backend é executado a partir de `a_code/a_backend`.
 - `jwt.secret`: usa `JWT_SECRET` com default local.
 - `jwt.expiration`: usa `JWT_EXPIRATION` com default `86400000` milissegundos.
 
@@ -184,7 +184,7 @@ O backend calcula:
 Com banco MySQL disponível:
 
 ```bash
-cd backend
+cd a_code/a_backend
 mvn spring-boot:run
 ```
 
@@ -196,7 +196,7 @@ http://localhost:8080
 
 ## Pontos importantes para manutenção
 
-- Alterações em endpoints devem ser refletidas nos serviços frontend em `frontend/src/services` ou nas chamadas diretas das páginas.
+- Alterações em endpoints devem ser refletidas nos serviços frontend em `a_code/b_frontend/src/services` ou nas chamadas diretas das páginas.
 - Novas entidades JPA devem ser avaliadas junto à estratégia `ddl-auto: update`; para ambientes reais, migrations versionadas são recomendáveis.
 - O storage local é uma dependência operacional do backend; backup de banco sem backup do diretório de arquivos deixa o sistema inconsistente.
 - O segredo JWT default é adequado apenas para execução local; deve ser substituído por variável segura fora do código.

@@ -14,11 +14,12 @@ Permitir que usuários autenticados gerenciem arquivos e pastas em uma interface
 
 | Módulo | Local | Responsabilidade |
 |---|---|---|
-| Frontend | `frontend/` | Interface React/Vite para login, cadastro, drive, favoritos e configurações. |
-| Backend | `backend/` | API Spring Boot para autenticação, usuários, arquivos, pastas, favoritos, persistência e armazenamento físico. |
-| Banco de dados | `mysql/` e `docker-compose.yml` | MySQL usado pela aplicação backend via Spring Data JPA/Hibernate. |
-| Armazenamento local | `storage/drive-corporativo` e `app.storage.path` | Diretório local onde os arquivos enviados são gravados fisicamente. |
-| Documentação técnica | `docs/` | Documentação técnica do estado atual do projeto. |
+| Frontend | `a_code/b_frontend/` | Interface React/Vite para login, cadastro, drive, favoritos e configurações. |
+| Backend | `a_code/a_backend/` | API Spring Boot para autenticação, usuários, arquivos, pastas, favoritos, persistência e armazenamento físico. |
+| Banco de dados | `a_code/c_mysql/` e `a_code/docker-compose.yml` | MySQL usado pela aplicação backend via Spring Data JPA/Hibernate. |
+| Armazenamento local | `c_storage/DriveCorporate` e `app.storage.path` | Diretório local onde os arquivos enviados são gravados fisicamente fora do backend. |
+| Scripts locais | `d_scripts/` | Automação para iniciar, parar, verificar status e migrar storage local. |
+| Documentação técnica | `b_docs/` | Documentação técnica do estado atual do projeto. |
 
 Arquivos de prompt, exemplos de prompt, documentos auxiliares de IA e conteúdos similares existentes no repositório não foram documentados por não fazerem parte da implementação executável do sistema.
 
@@ -51,29 +52,31 @@ Arquivos de prompt, exemplos de prompt, documentos auxiliares de IA e conteúdos
 
 - MySQL 8.4 via Docker Compose.
 - Volume Docker `mysql_data`.
-- Script `mysql/init.sql` para criação do banco `drive_corporativo`.
+- Script `a_code/c_mysql/init.sql` para criação do banco `drive_corporativo`.
 - Armazenamento de arquivos no filesystem local.
 
 ## Estrutura geral do repositório
 
 ```text
 DriveCorporate/
-├── backend/
-│   ├── pom.xml
-│   ├── README.md
-│   ├── src/main/java/com/company/drive/
-│   └── src/main/resources/application.yml
-├── frontend/
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── index.html
-│   └── src/
-├── mysql/
-│   └── init.sql
-├── storage/
-│   └── drive-corporativo/
-├── docs/
-├── docker-compose.yml
+├── a_code/
+│   ├── a_backend/
+│   │   ├── pom.xml
+│   │   ├── README.md
+│   │   ├── src/main/java/com/company/drive/
+│   │   └── src/main/resources/application.yml
+│   ├── b_frontend/
+│   │   ├── package.json
+│   │   ├── vite.config.js
+│   │   ├── index.html
+│   │   └── src/
+│   ├── c_mysql/
+│   │   └── init.sql
+│   └── docker-compose.yml
+├── b_docs/
+├── c_storage/
+│   └── DriveCorporate/
+├── d_scripts/
 ├── README.md
 └── LICENSE
 ```
@@ -97,5 +100,5 @@ DriveCorporate/
 - Testes automatizados implementados.
 - Arquivo `.env.example`.
 - Migrations versionadas com Flyway, Liquibase ou ferramenta equivalente.
-- Seed de dados de aplicação, além da criação do banco em `mysql/init.sql`.
+- Seed de dados de aplicação, além da criação do banco em `a_code/c_mysql/init.sql`.
 - Política de backup do banco ou do diretório de arquivos.
