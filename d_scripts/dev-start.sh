@@ -18,7 +18,7 @@ FRONTEND_PORT="5173"
 
 LOG_DIR="$PROJECT_ROOT/.logs"
 PID_DIR="$PROJECT_ROOT/.pids"
-STORAGE_DIR="$PROJECT_ROOT/storage/drive-corporativo"
+STORAGE_DIR="$PROJECT_ROOT/c_storage/DriveCorporate"
 
 BACKEND_LOG="$LOG_DIR/backend.log"
 FRONTEND_LOG="$LOG_DIR/frontend.log"
