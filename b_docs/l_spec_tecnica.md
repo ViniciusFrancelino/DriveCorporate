@@ -1,52 +1,19 @@
-# Especificação do Projeto — Drive Corporativo MVP
+# Especificação Técnica — Drive Corporativo MVP
 
-## 1. Visão Geral
-
-O projeto consiste em um sistema web simples para armazenamento e gerenciamento de arquivos corporativos, semelhante a uma versão reduzida do Google Drive, com foco em uso interno e demonstração técnica.
+## 1. Contexto Técnico
 
 A primeira versão deve ser um MVP funcional, executável localmente em ambiente Linux Debian dentro do WSL, com backend em Java Spring Boot, frontend em React com Vite, banco de dados MySQL e armazenamento local de arquivos no servidor.
-
-A prioridade do projeto é entregar um fluxo funcional de ponta a ponta:
-
-1. Usuário se cadastra.
-2. Usuário faz login.
-3. Usuário cria uma pasta.
-4. Usuário envia um arquivo.
-5. Backend salva o arquivo localmente.
-6. Backend salva os metadados no MySQL.
-7. Usuário visualiza seus arquivos.
-8. Usuário pesquisa arquivo por nome.
-9. Usuário baixa o arquivo.
-10. Usuário exclui logicamente o arquivo.
-
-A primeira versão não deve conter dashboard.
-
----
-
-## 2. Nome Provisório
-
-Drive Corporativo
-
----
-
-## 3. Objetivo do Projeto
 
 Criar uma aplicação web funcional para gerenciamento de arquivos, demonstrando domínio básico de:
 
 * frontend;
 * backend;
-* autenticação;
-* upload de arquivos;
 * persistência em banco de dados;
 * armazenamento local;
-* proteção de acesso por usuário;
-* organização básica por pastas.
 
 O objetivo não é criar uma arquitetura corporativa completa, mas sim um MVP simples, funcional e fácil de apresentar.
 
----
-
-## 4. Ambiente de Execução Inicial
+## 2. Ambiente de Execução Inicial
 
 O sistema deve ser desenvolvido e executado inicialmente em ambiente local.
 
@@ -70,11 +37,9 @@ O projeto deve conter um `README.md` com instruções claras para:
 6. Criar ou validar o diretório de armazenamento.
 7. Testar o fluxo principal do MVP.
 
----
+## 3. Tecnologias, Arquitetura e Persistência
 
-## 5. Tecnologias Definidas
-
-## 5.1 Frontend
+### 3.1 Frontend
 
 Tecnologias obrigatórias:
 
@@ -99,9 +64,7 @@ Não usar no MVP inicial:
 * dashboard;
 * painéis administrativos.
 
----
-
-## 5.2 Backend
+### 3.2 Backend
 
 Tecnologia obrigatória:
 
@@ -143,9 +106,7 @@ Não usar no MVP inicial:
 * Docker obrigatório;
 * Kubernetes.
 
----
-
-## 5.3 Banco de Dados
+### 3.3 Banco de Dados
 
 Banco obrigatório:
 
@@ -161,9 +122,7 @@ Não armazenar o conteúdo binário dos arquivos no banco.
 
 Os arquivos físicos devem ser armazenados no filesystem local. O banco deve armazenar apenas os metadados e o caminho controlado pelo backend.
 
----
-
-## 5.4 Armazenamento de Arquivos
+### 3.4 Armazenamento de Arquivos
 
 Tipo de armazenamento:
 
@@ -191,94 +150,52 @@ O backend deve gerar o nome físico do arquivo.
 
 O nome original do arquivo deve ser preservado no banco de dados, mas não deve ser usado como nome físico principal no disco.
 
----
+Regras de persistência:
 
-## 6. Escopo Obrigatório do MVP Inicial
+1. O nome físico do arquivo salvo deve ser único.
+2. O nome original do arquivo deve ser preservado no banco.
+
+## 4. Escopo Técnico Obrigatório do MVP Inicial
 
 O MVP inicial deve conter obrigatoriamente:
 
-1. Cadastro de usuário.
-2. Login com JWT.
-3. Logout no frontend.
-4. Proteção de rotas privadas no backend.
-5. Proteção de rotas privadas no frontend.
-6. Upload de arquivo.
-7. Salvamento físico do arquivo em diretório local.
-8. Salvamento dos metadados do arquivo no MySQL.
-9. Listagem de arquivos do usuário autenticado.
-10. Download de arquivo.
-11. Exclusão lógica de arquivo.
-12. Criação de pasta.
-13. Listagem de pastas.
-14. Associação opcional de arquivo a uma pasta.
-15. Busca simples por nome de arquivo.
-16. Interface web funcional em React.
-17. Instruções de execução no README.
+* Login com JWT.
+* Logout no frontend.
+* Proteção de rotas privadas no backend.
+* Proteção de rotas privadas no frontend.
+* Salvamento físico do arquivo em diretório local.
+* Salvamento dos metadados do arquivo no MySQL.
+* Interface web funcional em React.
+* Instruções de execução no README.
 
----
+Fluxo técnico de persistência:
 
-## 7. Fora do MVP Inicial — Não Implementar
+1. Sistema salva o arquivo no storage local.
+2. Sistema salva os metadados no MySQL.
+
+## 5. Restrições Técnicas Fora do MVP Inicial
 
 A IA não deve implementar no MVP inicial:
 
-1. Dashboard.
-2. Cards de resumo.
-3. Gráficos.
-4. Indicadores visuais de estatísticas.
-5. Total de arquivos em tela separada.
-6. Total de pastas em tela separada.
-7. Espaço utilizado em dashboard.
-8. Últimos arquivos enviados em dashboard.
-9. Compartilhamento público por link.
-10. Compartilhamento entre usuários.
-11. Permissões por equipe.
-12. Perfis de acesso.
-13. Painel administrativo.
-14. Preview de PDF.
-15. Preview de imagem.
-16. OCR.
-17. IA para resumo de documentos.
-18. Versionamento de arquivos.
-19. Integração com S3.
-20. Integração com Google Drive.
-21. Integração com Dropbox.
-22. Antivírus.
-23. Criptografia avançada de arquivos.
-24. Recuperação de senha por e-mail.
-25. Envio de e-mails.
-26. Notificações.
-27. Comentários em arquivos.
-28. Favoritos.
-29. Tags.
-30. Upload em lote.
-31. Upload resumível.
-32. Drag and drop avançado.
-33. Controle de cota por usuário.
-34. Logs avançados de auditoria.
-35. Lixeira visual com tela própria.
-36. Restauração de arquivos excluídos.
-37. Exclusão física automática.
-38. Docker obrigatório.
-39. Deploy em nuvem.
-40. Testes automatizados complexos.
+* Integração com S3.
+* Integração com Google Drive.
+* Integração com Dropbox.
+* Antivírus.
+* Criptografia avançada de arquivos.
+* Logs avançados de auditoria.
+* Exclusão física automática.
+* Docker obrigatório.
+* Deploy em nuvem.
+* Testes automatizados complexos.
 
 Qualquer funcionalidade não descrita no escopo obrigatório deve ser considerada fora do MVP inicial.
 
----
+## 6. Contratos de API e Requisitos de Implementação
 
-## 8. Funcionalidades do MVP
-
-## 8.1 Cadastro de Usuário
-
-O sistema deve permitir que um novo usuário se cadastre informando:
-
-* nome;
-* e-mail;
-* senha.
+### 6.1 Cadastro de Usuário
 
 Regras:
 
-* o e-mail deve ser único;
 * a senha deve ser criptografada com BCrypt;
 * não salvar senha em texto puro;
 * não retornar senha ou hash de senha em nenhuma resposta da API.
@@ -309,11 +226,7 @@ Response esperado:
 }
 ```
 
----
-
-## 8.2 Login
-
-O sistema deve permitir login com e-mail e senha.
+### 6.2 Login e Autenticação JWT
 
 A autenticação deve usar JWT.
 
@@ -357,9 +270,7 @@ Authorization: Bearer <token>
 * o backend deve identificar o usuário autenticado a partir do token;
 * endpoints privados não podem aceitar `userId` enviado manualmente pelo frontend para definir posse de arquivo ou pasta.
 
----
-
-## 8.3 Logout
+### 6.3 Logout
 
 O logout será tratado no frontend.
 
@@ -370,18 +281,7 @@ Regra:
 
 No MVP, não é necessário implementar blacklist de token no backend.
 
----
-
-## 8.4 Gerenciamento de Arquivos
-
-O usuário autenticado deve conseguir:
-
-* enviar arquivo;
-* listar seus arquivos;
-* baixar arquivo;
-* visualizar informações básicas do arquivo;
-* excluir logicamente arquivo;
-* pesquisar arquivo por nome.
+### 6.4 Validação de Arquivos
 
 Tipos aceitos inicialmente:
 
@@ -408,9 +308,7 @@ O backend deve validar:
 * usuário autenticado;
 * propriedade do arquivo.
 
----
-
-## 8.5 Upload de Arquivo
+### 6.5 Upload de Arquivo
 
 Endpoint:
 
@@ -457,9 +355,7 @@ Response esperado:
 }
 ```
 
----
-
-## 8.6 Listagem de Arquivos
+### 6.6 Listagem de Arquivos
 
 Endpoint:
 
@@ -490,9 +386,7 @@ Regras:
 * não retornar `storagePath`;
 * não retornar dados de outros usuários.
 
----
-
-## 8.7 Detalhes do Arquivo
+### 6.7 Detalhes do Arquivo
 
 Endpoint:
 
@@ -521,9 +415,7 @@ Regras:
 * se o arquivo pertencer a outro usuário, retornar 403 ou 404;
 * se o arquivo estiver excluído logicamente, retornar 404.
 
----
-
-## 8.8 Download de Arquivo
+### 6.8 Download de Arquivo
 
 Endpoint:
 
@@ -546,9 +438,7 @@ Content-Type: <contentType>
 Content-Disposition: attachment; filename="<originalName>"
 ```
 
----
-
-## 8.9 Exclusão Lógica de Arquivo
+### 6.9 Exclusão Lógica de Arquivo
 
 Endpoint:
 
@@ -573,9 +463,7 @@ Response esperado:
 }
 ```
 
----
-
-## 8.10 Busca de Arquivos
+### 6.10 Busca de Arquivos
 
 Endpoint:
 
@@ -613,22 +501,7 @@ Response esperado:
 ]
 ```
 
----
-
-## 8.11 Gerenciamento de Pastas
-
-O usuário autenticado deve conseguir:
-
-* criar pasta;
-* listar pastas;
-* acessar pasta pelo ID;
-* associar arquivos a uma pasta.
-
-Para simplificar a primeira versão, renomear e excluir pastas podem ficar fora do MVP inicial.
-
----
-
-## 8.12 Criação de Pasta
+### 6.11 Criação de Pasta
 
 Endpoint:
 
@@ -664,9 +537,7 @@ Regras:
 * se `parentFolderId` for informado, a pasta pai deve pertencer ao usuário autenticado;
 * não permitir duas pastas com o mesmo nome no mesmo nível para o mesmo usuário.
 
----
-
-## 8.13 Listagem de Pastas
+### 6.12 Listagem de Pastas
 
 Endpoint:
 
@@ -692,9 +563,7 @@ Regras:
 * listar apenas pastas do usuário autenticado;
 * não listar pastas de outros usuários.
 
----
-
-## 8.14 Detalhes da Pasta
+### 6.13 Detalhes da Pasta
 
 Endpoint:
 
@@ -719,11 +588,9 @@ Regras:
 * se a pasta não existir, retornar 404;
 * se a pasta pertencer a outro usuário, retornar 403 ou 404.
 
----
+## 7. Entidades Principais
 
-## 9. Entidades Principais
-
-## 9.1 User
+### 7.1 User
 
 Campos:
 
@@ -739,9 +606,7 @@ Regras:
 * `password` deve armazenar hash BCrypt;
 * `createdAt` deve ser preenchido automaticamente.
 
----
-
-## 9.2 Folder
+### 7.2 Folder
 
 Campos:
 
@@ -761,9 +626,7 @@ Regras:
 * a pasta pode ter uma pasta pai;
 * não permitir nomes duplicados no mesmo nível para o mesmo usuário.
 
----
-
-## 9.3 File
+### 7.3 File
 
 Campos:
 
@@ -793,9 +656,7 @@ Regras:
 * `deleted` deve iniciar como `false`;
 * `createdAt` deve ser preenchido automaticamente.
 
----
-
-## 10. Estrutura Sugerida do Backend
+## 8. Estrutura Sugerida do Backend
 
 ```txt
 src/main/java/com/company/drive
@@ -858,20 +719,16 @@ config
 └── StorageProperties.java
 ```
 
----
+## 9. Endpoints do MVP
 
-## 11. Endpoints do MVP
-
-## 11.1 Auth
+### 9.1 Auth
 
 ```txt
 POST /api/auth/register
 POST /api/auth/login
 ```
 
----
-
-## 11.2 Files
+### 9.2 Files
 
 ```txt
 POST /api/files/upload
@@ -882,9 +739,7 @@ DELETE /api/files/{id}
 GET /api/files/search?name=
 ```
 
----
-
-## 11.3 Folders
+### 9.3 Folders
 
 ```txt
 POST /api/folders
@@ -899,90 +754,7 @@ PUT /api/folders/{id}
 DELETE /api/folders/{id}
 ```
 
----
-
-## 12. Telas do Frontend
-
-## 12.1 Tela de Login
-
-Campos:
-
-* e-mail;
-* senha.
-
-Ações:
-
-* fazer login;
-* redirecionar para tela principal após login;
-* link para cadastro.
-
----
-
-## 12.2 Tela de Cadastro
-
-Campos:
-
-* nome;
-* e-mail;
-* senha.
-
-Ações:
-
-* cadastrar usuário;
-* redirecionar para login ou entrar automaticamente após cadastro.
-
----
-
-## 12.3 Tela Principal de Arquivos
-
-Esta será a principal tela do sistema.
-
-Componentes obrigatórios:
-
-* lista de arquivos;
-* lista de pastas;
-* botão para criar pasta;
-* botão para upload;
-* campo de busca;
-* botão de download;
-* botão de excluir;
-* botão de logout.
-
-Não deve conter:
-
-* dashboard;
-* cards de resumo;
-* gráficos;
-* indicadores estatísticos;
-* painel administrativo.
-
----
-
-## 12.4 Tela ou Modal de Detalhes do Arquivo
-
-Pode ser implementado como modal ou seção simples.
-
-Exibir:
-
-* nome original;
-* tipo;
-* tamanho;
-* data de envio;
-* pasta associada, quando houver;
-* botão de download;
-* botão de excluir.
-
-Não exibir:
-
-* caminho físico do arquivo;
-* nome físico interno;
-* dados técnicos sensíveis.
-
----
-
-## 13. Configurações Recomendadas
-
-## 13.1 application.yml
+## 10. Configurações Recomendadas
 
 Configuração inicial recomendada:
 
@@ -1016,9 +788,7 @@ Observação:
 
 Para o MVP local, `ddl-auto: update` é aceitável. Em uma versão futura, pode ser substituído por migrations com Flyway ou Liquibase.
 
----
-
-## 14. Regras de Segurança Obrigatórias
+## 11. Regras de Segurança Obrigatórias
 
 1. Um usuário nunca pode acessar arquivos de outro usuário.
 2. Um usuário nunca pode acessar pastas de outro usuário.
@@ -1040,9 +810,7 @@ Para o MVP local, `ddl-auto: update` é aceitável. Em uma versão futura, pode 
 18. Requisições sem token devem retornar 401.
 19. Acesso a recurso de outro usuário deve retornar 403 ou 404.
 
----
-
-## 15. Tratamento de Erros
+## 12. Tratamento de Erros
 
 O backend deve retornar respostas padronizadas de erro.
 
@@ -1067,49 +835,7 @@ Erros mínimos:
 * 413 para arquivo maior que o permitido;
 * 500 para erro interno inesperado.
 
----
-
-## 16. Regras de Negócio
-
-1. Um usuário só pode acessar seus próprios arquivos.
-2. Um usuário só pode acessar suas próprias pastas.
-3. Arquivos excluídos logicamente devem ser ocultados da listagem padrão.
-4. Arquivos excluídos logicamente não podem ser baixados.
-5. O nome físico do arquivo salvo deve ser único.
-6. O nome original do arquivo deve ser preservado no banco.
-7. O sistema deve validar tipos de arquivo permitidos.
-8. O sistema deve limitar o tamanho máximo de upload.
-9. Arquivos podem estar vinculados a uma pasta ou à raiz.
-10. Pastas podem ter subpastas.
-11. Não permitir duplicidade de nome de pasta no mesmo nível para o mesmo usuário.
-12. O sistema não deve possuir dashboard na primeira versão.
-13. O sistema não deve implementar funcionalidades fora do MVP.
-
----
-
-## 17. Critérios de Aceite Funcionais
-
-O MVP será considerado funcional quando:
-
-1. O usuário conseguir se cadastrar.
-2. O usuário conseguir fazer login.
-3. O usuário conseguir acessar a tela principal após login.
-4. O usuário conseguir criar uma pasta.
-5. O usuário conseguir listar suas pastas.
-6. O usuário conseguir enviar um arquivo.
-7. O arquivo for salvo localmente.
-8. Os metadados do arquivo forem salvos no MySQL.
-9. O usuário conseguir listar seus arquivos.
-10. O usuário conseguir pesquisar arquivos por nome.
-11. O usuário conseguir baixar um arquivo.
-12. O usuário conseguir excluir logicamente um arquivo.
-13. O arquivo excluído deixar de aparecer na listagem.
-14. O usuário conseguir fazer logout.
-15. O sistema funcionar sem dashboard.
-
----
-
-## 18. Critérios de Aceite Técnicos
+## 13. Critérios de Aceite Técnicos
 
 1. O backend deve iniciar sem erros com:
 
@@ -1149,11 +875,9 @@ npm run dev
 
 15. Nenhuma tela de dashboard deve ser criada no MVP.
 
----
+## 14. Ordem Recomendada de Desenvolvimento
 
-## 19. Ordem Recomendada de Desenvolvimento
-
-## Fase 1 — Base do Backend
+### 14.1 Fase 1 — Base do Backend
 
 1. Criar projeto Spring Boot.
 2. Configurar Maven.
@@ -1164,9 +888,7 @@ npm run dev
 7. Criar repositories.
 8. Validar conexão com banco.
 
----
-
-## Fase 2 — Autenticação
+### 14.2 Fase 2 — Autenticação
 
 9. Implementar cadastro de usuário.
 10. Implementar criptografia de senha com BCrypt.
@@ -1176,9 +898,7 @@ npm run dev
 14. Proteger endpoints privados.
 15. Testar autenticação via Postman, Insomnia ou curl.
 
----
-
-## Fase 3 — Arquivos
+### 14.3 Fase 3 — Arquivos
 
 16. Implementar configuração do diretório de storage.
 17. Implementar upload local.
@@ -1190,9 +910,7 @@ npm run dev
 23. Implementar exclusão lógica.
 24. Implementar busca por nome.
 
----
-
-## Fase 4 — Pastas
+### 14.4 Fase 4 — Pastas
 
 25. Implementar criação de pasta.
 26. Implementar listagem de pastas.
@@ -1200,9 +918,7 @@ npm run dev
 28. Permitir upload associado a uma pasta.
 29. Validar posse da pasta pelo usuário autenticado.
 
----
-
-## Fase 5 — Frontend
+### 14.5 Fase 5 — Frontend
 
 30. Criar projeto React com Vite.
 31. Instalar Axios, React Router DOM e Bootstrap.
@@ -1218,9 +934,7 @@ npm run dev
 41. Criar ação de exclusão lógica.
 42. Criar logout.
 
----
-
-## Fase 6 — Finalização
+### 14.6 Fase 6 — Finalização
 
 43. Criar README.
 44. Documentar comandos de execução.
@@ -1230,32 +944,7 @@ npm run dev
 48. Padronizar mensagens de erro.
 49. Garantir que não exista dashboard no MVP.
 
----
-
-## 20. Fluxo de Demonstração
-
-Durante a apresentação, o sistema deve demonstrar o seguinte fluxo:
-
-1. Usuário acessa a tela de cadastro.
-2. Usuário cria uma conta.
-3. Usuário faz login.
-4. Usuário acessa a tela principal de arquivos.
-5. Usuário cria uma pasta.
-6. Usuário faz upload de um arquivo.
-7. Sistema salva o arquivo no storage local.
-8. Sistema salva os metadados no MySQL.
-9. Usuário visualiza o arquivo na listagem.
-10. Usuário pesquisa o arquivo pelo nome.
-11. Usuário faz download do arquivo.
-12. Usuário exclui logicamente o arquivo.
-13. Sistema remove o arquivo da listagem.
-14. Usuário faz logout.
-
-Não demonstrar dashboard, pois essa funcionalidade não faz parte da primeira versão.
-
----
-
-## 21. Restrições para Geração por IA
+## 15. Restrições para Geração por IA
 
 A IA deve gerar código simples, funcional e direto.
 
@@ -1296,9 +985,7 @@ A IA não deve substituir:
 * armazenamento local por serviço externo;
 * JWT por sessão tradicional.
 
----
-
-## 22. Estrutura Esperada do Repositório
+## 16. Estrutura Esperada do Repositório
 
 Estrutura recomendada:
 
@@ -1322,9 +1009,7 @@ drive-corporativo
 
 O diretório `storage` pode ser criado manualmente ou automaticamente pelo backend na inicialização.
 
----
-
-## 23. README Obrigatório
+## 17. README Obrigatório
 
 O `README.md` principal deve conter:
 
@@ -1360,52 +1045,27 @@ npm install
 npm run dev
 ```
 
----
-
-## 24. Diretriz Final do MVP
+## 18. Diretriz Final Técnica do MVP
 
 Este projeto deve ser desenvolvido como MVP funcional, simples e executável localmente no Debian dentro do WSL.
 
 A prioridade é entregar um sistema funcionando de ponta a ponta, não uma arquitetura corporativa completa.
 
-O fluxo principal obrigatório é:
+Fluxo técnico principal:
 
-1. Usuário se cadastra.
-2. Usuário faz login.
-3. Usuário cria uma pasta.
-4. Usuário envia um arquivo.
-5. Backend salva o arquivo localmente.
-6. Backend salva os metadados no MySQL.
-7. Frontend lista o arquivo.
-8. Usuário pesquisa o arquivo por nome.
-9. Usuário baixa o arquivo.
-10. Usuário exclui logicamente o arquivo.
-11. Usuário faz logout.
+1. Backend salva o arquivo localmente.
+2. Backend salva os metadados no MySQL.
+3. Frontend lista o arquivo.
 
-Qualquer funcionalidade que não contribua diretamente para esse fluxo deve ficar fora do MVP inicial.
+Restrições:
 
-A IA não deve adicionar funcionalidades extras por conta própria.
-
-A IA não deve criar dashboard.
-
-A IA não deve criar endpoint de dashboard.
-
-A IA não deve criar cards estatísticos.
-
-A IA não deve criar gráficos.
-
-A IA não deve trocar as tecnologias definidas.
-
-A IA não deve substituir MySQL por outro banco.
-
-A IA não deve substituir armazenamento local por serviço externo.
-
-A IA não deve criar arquitetura de microsserviços.
-
-A IA não deve exigir Docker para executar o projeto.
-
-A IA não deve implementar permissões avançadas.
-
-A IA não deve implementar compartilhamento de arquivos.
+* A IA não deve adicionar funcionalidades extras por conta própria.
+* A IA não deve criar dashboard.
+* A IA não deve criar endpoint de dashboard.
+* A IA não deve trocar as tecnologias definidas.
+* A IA não deve substituir MySQL por outro banco.
+* A IA não deve substituir armazenamento local por serviço externo.
+* A IA não deve criar arquitetura de microsserviços.
+* A IA não deve exigir Docker para executar o projeto.
 
 O resultado esperado é uma aplicação local, simples, funcional, demonstrável e fácil de explicar em uma apresentação técnica.
